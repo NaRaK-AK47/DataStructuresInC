@@ -26,6 +26,8 @@ void enQueue(QueueADT *q,int data);
 
 int deQueue(QueueADT *q);
 
+QueueADT * deleteQueue(QueueADT *q);
+
 int main (void){
 
     QueueADT * test = NULL;
@@ -60,7 +62,8 @@ int main (void){
     enQueue(test,10);
     displayQueue(test);
     //printf("Capacity of Queue %d\n",queueCapacity(test));
-
+    test = deleteQueue(test);
+    displayQueue(test);
     return 0;
 }
 
@@ -88,7 +91,10 @@ QueueADT * CreateQueue(int size){
 
 int isEmptyQueue(QueueADT * q){
 
-    if(q->front == -1 && q->end == -1){
+    if(q == NULL){
+        return 1;
+    }
+    else if(q->front == -1 && q->end == -1 ){
         return 1;
     }
     else 
@@ -134,6 +140,7 @@ void IncreaseQueueto(QueueADT *q,int incsize){
             q->arr = temp;
 
         }
+        free(temp);
 }
 
 void DeceaseQueueto(QueueADT*q,int decsize,int noOfElementsinQueue){
@@ -158,34 +165,10 @@ void DeceaseQueueto(QueueADT*q,int decsize,int noOfElementsinQueue){
     q->size  = decsize;
     free(q->arr);
     q->arr = temp;
+    free(temp);
 
 }
 
-// void displayQueue(QueueADT *q){
-
-//     if(q->front == -1){
-//         printf("Queue is Empty cannot display\n");
-//         return;
-//     }
-//     for(int i = q->front;i<q->size;i++){
-//        // printf(" %d ",q->arr[i]);
-//         printf(" display front = %d value = %d, end = %d\n",q->front,q->arr[i%q->size],q->end);
-//     }
-//     printf("\n");
-// }
-
-// void displayQueue(QueueADT *q) {
-//     if (isEmptyQueue(q)) {
-//         printf("Queue is Empty, cannot display\n");
-//         return;
-//     }
-
-//     int i;
-//     for (i = q->front; i != (q->end + 1) % q->size; i = (i + 1) % q->size) {
-//         printf(" display front = %d value = %d, end = %d\n", q->front, q->arr[i], q->end);
-//     }
-//     printf("\n");
-// }
 
 void displayQueue(QueueADT *q) {
     if (isEmptyQueue(q)) {
@@ -259,4 +242,12 @@ int deQueue(QueueADT *q){
             }
             return t;
         } 
+}
+
+QueueADT * deleteQueue(QueueADT *q){
+
+    
+    free(q->arr);
+    free(q);
+    return NULL;
 }
